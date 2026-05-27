@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ICS3U Website Portfolios</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f7f7f7;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    input {
+      padding: 10px;
+      width: 320px;
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .card a {
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .meta {
+      color: #555;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>ICS3U Website Portfolios</h1>
+  <p>Student websites from GitHub Classroom.</p>
+
+  <input id="search" placeholder="Search by username...">
+
+  <div id="portfolioGrid" class="grid"></div>
+
+  <script>
+    const ORG = "ICS3U-2025-26";
+    const PREFIX = "website-portfolio-";
+
+    const grid = document.getElementById("portfolioGrid");
+    const search = document.getElementById("search");
+
+    async function getRepos(page = 1, allRepos = []) {
+      const url = `https://api.github.com/orgs/${ORG}/repos?per_page=100&page=${page}`;
+      const response = await fetch(url);
+      const repos = await response.json();
+
+      if (!Array.isArray(repos)) {
+        grid.innerHTML = "<p>Could not load repositories. Check the organization name and repo visibility.</p>";
+        return [];
+      }
+
+      allRepos = allRepos.concat(repos);
+
+      if (repos.length === 100) {
+        return getRepos(page + 1, allRepos);
+      }
+
+      return allRepos;
+    }
+
+    function usernameFromRepo(repoName) {
+      return repoName.replace(PREFIX, "");
+    }
+
+    function siteUrl(repoName) {
+      return `https://${ORG}.github.io/${repoName}/`;
+    }
+
+    function render(repos) {
+      grid.innerHTML = "";
+
+      repos.forEach(repo => {
+        const username = usernameFromRepo(repo.name);
+        const lastPush = new Date(repo.pushed_at).toLocaleString();
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <a href="${siteUrl(repo.name)}" target="_blank">${username}</a>
+          <div class="meta">
+            <a href="${repo.html_url}" target="_blank">View repository</a>
+          </div>
+          <div class="meta">Last push: ${lastPush}</div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    async function main() {
+      const repos = await getRepos();
+
+      const portfolioRepos = repos
+        .filter(repo => repo.name.startsWith(PREFIX))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      render(portfolioRepos);
+
+      search.addEventListener("input", () => {
+        const query = search.value.toLowerCase();
+
+        const filtered = portfolioRepos.filter(repo =>
+          repo.name.toLowerCase().includes(query)
+        );
+
+        render(filtered);
+      });
+    }
+
+    main();
+  </script>
+</body>
+</html>
