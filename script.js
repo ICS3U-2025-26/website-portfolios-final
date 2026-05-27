@@ -21,7 +21,24 @@ const CLASSROOMS = [
 // Example: "ghostrecon211":   "John D.",
 // ─────────────────────────────────────────────────────────────────────────
 const NAME_MAP = {
+    "aadya-01": "Aadya R.",
+    "anzivii": "Alexa R.",
+    "helenj28": "Helen J.",
+    "Jessica3152011": "Jessica D.",
+    "JvH77": "Johanna vH.",
+    "Crescendo-Kirby": "Juliette G.",
+    "KK42Hat": "Keira K.",
+    "livlefler": "Liv L.",
+    "nancyl28": "Nancy L.",
     "rongfeng1203": "Rina F.",
+    "Sophiaahuangg": "Sophia H.",
+    "Sophieg11": "Sophie G.",
+    "TeskeA27": "Teske A.",
+    "Os-Wamen": "Yuwa I.",
+    "Isn2315": "Jia Qi L.",
+    "QianhaoHan": "Qianhao H.",
+    "arhsub07": "Shadia B.",
+    "valeriepoonn": "Valerie P."
     // "coolgamer99": "Jane S.",
 };
 
