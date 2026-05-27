@@ -394,3 +394,17 @@ footer a:hover {
     justify-content: center;
     }
 }
+
+
+/* Course label shown on cards when using multiple classrooms */
+.course-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--accent-hover);
+    margin-bottom: 16px;
+}
